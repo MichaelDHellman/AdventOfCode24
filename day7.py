@@ -18,6 +18,29 @@ def check_formable(goal, vals):
             return val
     return 0
 
+def check_formable_p2(goal, vals):
+    for i in range(3**(len(vals)-1)):
+        val = vals[0]
+        bStr = ternary_format(i)
+        bStr = bStr.rjust(len(ternary_format((3**(len(vals)-1))-1)), '0')
+        for j,b in enumerate(bStr):
+            if b == '0':
+                val = val + vals[j+1]
+            elif b == '1':
+                val = val * vals[j+1]
+            elif b == '2':
+                val = int(str(val) + str(vals[j+1]))
+        if val == goal:
+            return val
+    return 0
+
+def ternary_format(num):
+    outstr = ''
+    while(num > 0):
+        outstr = str(num % 3) + outstr
+        num //= 3
+    return outstr
+
 if __name__ == "__main__":
     pinput = ""
     with open("./day7.txt", 'r') as f:
@@ -26,3 +49,5 @@ if __name__ == "__main__":
     print(max([len(i[1]) for i in pinput]))
     outcomes = [check_formable(i,j) for i,j in pinput]
     print(sum(outcomes))
+    outcomesP2 = [check_formable_p2(i,j) for i,j in pinput]
+    print(sum(outcomesP2))
